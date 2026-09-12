@@ -8,14 +8,34 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @State private var career: Career?
+    @State private var hasStudentID = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if career == nil {
+
+                CareerSetupView { newCareer in
+                    career = newCareer
+                }
+
+            } else if !hasStudentID {
+
+                StudentIDSetupView {
+                    hasStudentID = true
+                }
+
+            } else {
+
+                Text("UniPath")
+
+            }
         }
-        .padding()
+        .onAppear {
+            career = CareerStorage.load()
+            hasStudentID = StudentIDStorage.load() != nil
+        }
     }
 }
 
