@@ -12,7 +12,13 @@
 
   },
   "testTargets" : [
-
+    {
+      "target" : {
+        "containerPath" : "container:UniPath.xcodeproj",
+        "identifier" : "B2EA94DE30559F0C009C796A",
+        "name" : "UniPathTests"
+      }
+    }
   ],
   "version" : 1
 }

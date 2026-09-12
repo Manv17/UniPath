@@ -6,3 +6,22 @@
 //
 
 import Foundation
+
+enum DegreeType: String, CaseIterable, Codable {
+    case bachelor = "Triennale"
+    case master = "Magistrale"
+    case singleCycle = "Ciclo Unico"
+    
+    var id: Self { self }
+    
+    var defaultTotalCFU: Int {
+        switch self {
+        case .bachelor:
+            return 180
+        case .master:
+            return 120
+        case .singleCycle:
+            return 300
+        }
+    }
+}

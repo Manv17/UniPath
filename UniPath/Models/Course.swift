@@ -6,3 +6,28 @@
 //
 
 import Foundation
+
+struct Course: Identifiable, Codable, Hashable {
+    let id: UUID
+    var name: String
+    var cfu: Int
+    var grade: Int?
+    var date: Date?
+    var status: CourseStatus
+
+    init(
+        id: UUID = UUID(),
+        name: String,
+        cfu: Int,
+        grade: Int? = nil,
+        date: Date? = nil,
+        status: CourseStatus = .toDo
+    ) {
+        self.id = id
+        self.name = name
+        self.cfu = cfu
+        self.grade = grade
+        self.date = date
+        self.status = status
+    }
+}

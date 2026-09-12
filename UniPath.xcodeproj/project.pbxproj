@@ -6,14 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		B2EA94E330559F0C009C796A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B29454A9304C7377008BCBF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B29454B0304C7377008BCBF3;
+			remoteInfo = UniPath;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		B29454B1304C7377008BCBF3 /* UniPath.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniPath.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2EA94DF30559F0C009C796A /* UniPathTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UniPathTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2EA94EA3055A169009C796A /* UniPathTests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = UniPathTests; sourceTree = "<group>"; };
+		B2EA94EB3055A1B7009C796A /* UniPathTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UniPathTests.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B29454B3304C7377008BCBF3 /* UniPath */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = UniPath;
+			sourceTree = "<group>";
+		};
+		B2EA94E030559F0C009C796A /* UniPathTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = UniPathTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,13 +44,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B2EA94DC30559F0C009C796A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		B29454A8304C7377008BCBF3 = {
 			isa = PBXGroup;
 			children = (
+				B2EA94EB3055A1B7009C796A /* UniPathTests.xctestplan */,
+				B2EA94EA3055A169009C796A /* UniPathTests */,
 				B29454B3304C7377008BCBF3 /* UniPath */,
+				B2EA94E030559F0C009C796A /* UniPathTests */,
 				B29454B2304C7377008BCBF3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				B29454B1304C7377008BCBF3 /* UniPath.app */,
+				B2EA94DF30559F0C009C796A /* UniPathTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +99,29 @@
 			productReference = B29454B1304C7377008BCBF3 /* UniPath.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B2EA94DE30559F0C009C796A /* UniPathTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2EA94E530559F0C009C796A /* Build configuration list for PBXNativeTarget "UniPathTests" */;
+			buildPhases = (
+				B2EA94DB30559F0C009C796A /* Sources */,
+				B2EA94DC30559F0C009C796A /* Frameworks */,
+				B2EA94DD30559F0C009C796A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B2EA94E430559F0C009C796A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B2EA94E030559F0C009C796A /* UniPathTests */,
+			);
+			name = UniPathTests;
+			packageProductDependencies = (
+			);
+			productName = UniPathTests;
+			productReference = B2EA94DF30559F0C009C796A /* UniPathTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +134,10 @@
 				TargetAttributes = {
 					B29454B0304C7377008BCBF3 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					B2EA94DE30559F0C009C796A = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = B29454B0304C7377008BCBF3;
 					};
 				};
 			};
@@ -100,12 +156,20 @@
 			projectRoot = "";
 			targets = (
 				B29454B0304C7377008BCBF3 /* UniPath */,
+				B2EA94DE30559F0C009C796A /* UniPathTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B29454AF304C7377008BCBF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B2EA94DD30559F0C009C796A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +186,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B2EA94DB30559F0C009C796A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B2EA94E430559F0C009C796A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B29454B0304C7377008BCBF3 /* UniPath */;
+			targetProxy = B2EA94E330559F0C009C796A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B29454BA304C7379008BCBF3 /* Debug */ = {
@@ -310,6 +389,48 @@
 			};
 			name = Release;
 		};
+		B2EA94E630559F0C009C796A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 49DP47CU9A;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = manv.UniPathTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UniPath.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/UniPath";
+			};
+			name = Debug;
+		};
+		B2EA94E730559F0C009C796A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 49DP47CU9A;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = manv.UniPathTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UniPath.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/UniPath";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -327,6 +448,15 @@
 			buildConfigurations = (
 				B29454BD304C7379008BCBF3 /* Debug */,
 				B29454BE304C7379008BCBF3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B2EA94E530559F0C009C796A /* Build configuration list for PBXNativeTarget "UniPathTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2EA94E630559F0C009C796A /* Debug */,
+				B2EA94E730559F0C009C796A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
