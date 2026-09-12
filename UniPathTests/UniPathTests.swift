@@ -86,5 +86,50 @@ struct UniPathTests {
         #expect(statistics.completedCFU == 3)
         #expect(statistics.weightedAverage == nil)
     }
+    
+    @Test
+    func careerCanBeSavedAndLoaded() {
+        let career = Career(
+            fullName: "Mario Rossi",
+            email: "mario.rossi@example.com",
+            matricola: "123456",
+            enrollmentYear: 2023,
+            degreeType: .bachelor,
+            courses: [
+                Course(
+                    name: "Analisi",
+                    cfu: 9,
+                    grade: 27,
+                    status: .completed
+                )
+            ]
+        )
+
+        CareerStorage.save(career)
+
+        let loadedCareer = CareerStorage.load()
+
+        #expect(loadedCareer != nil)
+        #expect(loadedCareer?.fullName == "Mario Rossi")
+        #expect(loadedCareer?.email == "mario.rossi@example.com")
+        #expect(loadedCareer?.matricola == "123456")
+        #expect(loadedCareer?.courses.count == 1)
+        #expect(loadedCareer?.courses.first?.name == "Analisi")
+    }
+    
+    @Test
+    func careerCanBeDeleted() {
+        let career = Career(
+            fullName: "Mario Rossi"
+        )
+
+        CareerStorage.save(career)
+
+        #expect(CareerStorage.load() != nil)
+
+        CareerStorage.delete()
+
+        #expect(CareerStorage.load() == nil)
+    }
 
 }
