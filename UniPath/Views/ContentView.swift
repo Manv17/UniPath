@@ -16,27 +16,29 @@ struct ContentView: View {
 
     var body: some View {
 
-        if !hasSeenWelcome {
+        Group {
+            if !hasSeenWelcome {
 
-            WelcomeView {
-                hasSeenWelcome = true
+                WelcomeView {
+                    hasSeenWelcome = true
+                }
+
+            } else if career == nil {
+
+                CareerSetupView { newCareer in
+                    career = newCareer
+                }
+
+            } else if !hasStudentID {
+
+                StudentIDSetupView {
+                    hasStudentID = true
+                }
+
+            } else {
+
+                MainTabView()
             }
-
-        } else if career == nil {
-
-            CareerSetupView { newCareer in
-                career = newCareer
-            }
-
-        } else if !hasStudentID {
-
-            StudentIDSetupView {
-                hasStudentID = true
-            }
-
-        } else {
-
-            Text("UniPath")
         }
         .onAppear {
             loadData()
@@ -48,8 +50,6 @@ struct ContentView: View {
         hasStudentID = StudentIDStorage.load() != nil
     }
 }
-
-
 
 #Preview {
     ContentView()
