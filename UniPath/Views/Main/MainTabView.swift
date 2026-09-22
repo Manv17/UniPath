@@ -18,7 +18,7 @@ struct MainTabView: View {
             }
             
             Tab("Libretto", systemImage: "book.pages.fill") {
-                LibrettoView()
+                LibrettoView(career: career)
             }
             
             Tab("Profilo", systemImage: "person.crop.circle.fill") {
