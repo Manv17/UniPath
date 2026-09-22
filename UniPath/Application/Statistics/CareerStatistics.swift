@@ -33,18 +33,18 @@ struct CareerStatistics {
             }
         }
 
-        if totalCFU < 0 {
+        if totalCFU == 0 {
             return nil
         }
 
         return weightedSum / Double(totalCFU)
     }
     
-    var graduationBase: Double? {
-        guard let weightedAverage else {
-            return nil
+    var graduationBase: Double {
+        guard let average = weightedAverage else {
+            return 0.0
         }
-        
-        return weightedAverage / 30.0 * 110.0
+
+        return average / 30.0 * 110.0
     }
 }

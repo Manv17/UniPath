@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct MainTabView: View {
-    
+
+    let career: Career
+
     var body: some View {
         TabView {
             Tab("Home", systemImage: "house.fill") {
-                HomeView()
+                HomeView(career: career)
             }
             
             Tab("Libretto", systemImage: "book.pages.fill") {
@@ -31,5 +33,9 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView()
+    MainTabView(
+        career: Career(
+            fullName: "Mario Rossi"
+        )
+    )
 }

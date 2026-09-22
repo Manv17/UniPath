@@ -37,7 +37,7 @@ struct ContentView: View {
 
             } else {
 
-                MainTabView()
+                MainTabView(career: career!)
             }
         }
         .onAppear {
