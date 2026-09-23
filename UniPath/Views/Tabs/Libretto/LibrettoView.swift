@@ -36,7 +36,12 @@ struct LibrettoView: View {
                     } else {
                         
                         ForEach(filteredCourses) { course in
-                            CourseRow(course: course)
+                            NavigationLink {
+                                CourseInfoView(course: course, career: $career)
+                            } label: {
+                                CourseRow(course: course)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }
@@ -55,12 +60,12 @@ struct LibrettoView: View {
                             newCourseType = .graded
                             showingAddCourseSheet = true
                         }
-
+                        
                         Button("Idoneità") {
                             newCourseType = .passFail
                             showingAddCourseSheet = true
                         }
-
+                        
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -141,6 +146,6 @@ struct LibrettoView: View {
                    status: .completed)
         ]
     )
-
+    
     LibrettoView(career: $career)
 }
