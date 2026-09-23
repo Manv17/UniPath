@@ -9,9 +9,12 @@ import SwiftUI
 
 struct LibrettoView: View {
     
-    let career: Career
+    @Binding var career: Career
     
     @State private var selectedFilter: LibrettoFilter = .all
+    
+    @State private var showingAddCourseSheet = false
+    @State private var newCourseType: CourseType = .graded
     
     var body: some View {
         NavigationStack {
@@ -45,6 +48,30 @@ struct LibrettoView: View {
             )
             .navigationTitle("Libretto")
             .toolbarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button("Corso") {
+                            newCourseType = .graded
+                            showingAddCourseSheet = true
+                        }
+
+                        Button("Idoneità") {
+                            newCourseType = .passFail
+                            showingAddCourseSheet = true
+                        }
+
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddCourseSheet) {
+                AddCourseView(
+                    career: $career,
+                    type: newCourseType
+                )
+            }
         }
     }
     
@@ -104,62 +131,20 @@ struct LibrettoView: View {
 }
 
 #Preview {
-    LibrettoView(
-        career: Career(
-            fullName: "Mario Rossi",
-            degreeType: .bachelor,
-            courses: [
-                Course(
-                    name: "Analisi 1",
-                    cfu: 9,
-                    grade: 27,
-                    status: .completed,
-                    type: .graded,
-                    semester: .first
-                ),
-                
-                Course(
-                    name: "Programmazione",
-                    cfu: 12,
-                    grade: 30,
-                    status: .completed,
-                    type: .graded,
-                    semester: .first
-                ),
-                
-                Course(
-                    name: "Fisica",
-                    cfu: 9,
-                    grade: 24,
-                    status: .completed,
-                    type: .graded,
-                    semester: .first
-                ),
-                
-                Course(
-                    name: "Analisi 2",
-                    cfu: 8,
-                    status: .planned,
-                    type: .graded,
-                    semester: .first
-                ),
-                
-                Course(
-                    name: "Reti di calcolatori",
-                    cfu: 9,
-                    status: .toDo,
-                    type: .graded,
-                    semester: .first
-                ),
-                
-                Course(
-                    name: "Inglese B2",
-                    cfu: 3,
-                    status: .completed,
-                    type: .passFail,
-                    semester: .first
-                )
-            ]
-        )
+    @Previewable @State var career = Career(
+        fullName: "Mario Rossi",
+        courses: [
+            Course(
+                name: "Analisi 1",
+                cfu: 9,
+                grade: 27,
+                status: .completed,
+                type: .graded,
+                semester: .first,
+                year: 1
+            )
+        ]
     )
+
+    LibrettoView(career: $career)
 }

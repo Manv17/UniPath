@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
 
-    let career: Career
+    @State var career: Career
 
     var body: some View {
         TabView {
@@ -18,7 +18,7 @@ struct MainTabView: View {
             }
             
             Tab("Libretto", systemImage: "book.pages.fill") {
-                LibrettoView(career: career)
+                LibrettoView(career: $career)
             }
             
             Tab("Profilo", systemImage: "person.crop.circle.fill") {

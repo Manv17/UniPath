@@ -14,7 +14,7 @@ struct Career: Codable {
     var enrollmentYear: Int
     var degreeType: DegreeType
     var courses: [Course]
-
+    
     init(
         fullName: String = "",
         email: String = "",
@@ -29,5 +29,16 @@ struct Career: Codable {
         self.enrollmentYear = enrollmentYear
         self.degreeType = degreeType
         self.courses = courses
+    }
+    
+    var duration: Int {
+        switch degreeType {
+        case .bachelor:
+            return 3
+        case .master:
+            return 2
+        case .singleCycle:
+            return 5
+        }
     }
 }
