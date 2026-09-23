@@ -101,26 +101,24 @@ struct AddCourseView: View {
     }
     
     private func saveCourse() {
-
+        
         let finalGrade: Int?
-
+        
         if type == .graded && status == .completed {
             finalGrade = grade ?? 18
         } else {
             finalGrade = nil
         }
-
-        let newCourse = Course(
-            name: name,
-            cfu: cfu,
-            grade: finalGrade,
-            date: status == .toDo ? nil : selectedDate,
-            status: status,
-            type: type,
-            semester: semester,
-            year: year,
-        )
-
+        
+        let newCourse = Course(name: name,
+                               cfu: cfu,
+                               type: type,
+                               year: year,
+                               semester: semester,
+                               status: status,
+                               date: status == .toDo ? nil : selectedDate,
+                               grade: finalGrade)
+        
         career.courses.append(newCourse)
 
         CareerStorage.save(career)

@@ -134,15 +134,11 @@ struct LibrettoView: View {
     @Previewable @State var career = Career(
         fullName: "Mario Rossi",
         courses: [
-            Course(
-                name: "Analisi 1",
-                cfu: 9,
-                grade: 27,
-                status: .completed,
-                type: .graded,
-                semester: .first,
-                year: 1
-            )
+            Course(name: "Analisi 1", cfu: 9, type: .graded, year: 1, semester: .first, status: .completed, date: Date.now, grade: 27),
+            Course(name: "Fisica", cfu: 9, type: .graded, year: 2, semester: .first,
+                   status: .planned),
+            Course(name: "Inglese 1", cfu: 6, type: .passFail, year: 2, semester: .first,
+                   status: .completed)
         ]
     )
 

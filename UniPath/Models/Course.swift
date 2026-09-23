@@ -11,32 +11,32 @@ struct Course: Identifiable, Codable, Hashable {
     let id: UUID
     var name: String
     var cfu: Int
-    var grade: Int?
-    var date: Date?
-    var status: CourseStatus
     var type: CourseType
-    var semester: CourseSemester
     var year: Int
+    var semester: CourseSemester
+    var status: CourseStatus
+    var date: Date?
+    var grade: Int?
 
     init(
         id: UUID = UUID(),
         name: String,
         cfu: Int,
-        grade: Int? = nil,
-        date: Date? = nil,
-        status: CourseStatus = .toDo,
         type: CourseType,
+        year: Int,
         semester: CourseSemester,
-        year: Int
+        status: CourseStatus = .toDo,
+        date: Date? = nil,
+        grade: Int? = nil
     ) {
         self.id = id
         self.name = name
         self.cfu = cfu
-        self.grade = grade
-        self.date = date
-        self.status = status
         self.type = type
-        self.semester = semester
         self.year = year
+        self.semester = semester
+        self.status = status
+        self.date = date
+        self.grade = grade
     }
 }
