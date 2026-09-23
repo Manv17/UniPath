@@ -18,8 +18,14 @@ struct CourseInfoView: View {
     @State private var showingDeleteConfirmation = false
     
     private var formattedDate: String {
-        guard let date = course.date else { return "Non disponibile" }
+        guard let date = currentCourse.date else { return "Non disponibile" }
         return date.formatted(date: .numeric, time: .omitted)
+    }
+    
+    private var currentCourse: Course {
+        career.courses.first {
+            $0.id == course.id
+        } ?? course
     }
     
     var body: some View {
@@ -33,7 +39,7 @@ struct CourseInfoView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
                         
-                        Text("\(course.cfu)")
+                        Text("\(currentCourse.cfu)")
                     }
                     
                     VStack(alignment: .leading) {
@@ -42,7 +48,7 @@ struct CourseInfoView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
                         
-                        Text("\(course.year)º anno - \(course.semester.rawValue)")
+                        Text("\(currentCourse.year)º anno - \(currentCourse.semester.rawValue)")
                     }
                     
                     VStack(alignment: .leading) {
@@ -51,7 +57,7 @@ struct CourseInfoView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
                         
-                        Text("\(course.type.rawValue)")
+                        Text("\(currentCourse.type.rawValue)")
                     }
                     
                 }
@@ -63,10 +69,10 @@ struct CourseInfoView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(.secondary)
                         
-                        Text("\(course.status.rawValue)")
+                        Text("\(currentCourse.status.rawValue)")
                     }
                     
-                    if course.status != .toDo {
+                    if currentCourse.status != .toDo {
                         VStack(alignment: .leading) {
                             
                             Text("Data")
@@ -78,7 +84,7 @@ struct CourseInfoView: View {
                         }
                     }
                     
-                    if (course.status == .completed) {
+                    if (currentCourse.status == .completed) {
                         VStack(alignment: .leading){
                             
                             Text("Voto")
@@ -86,9 +92,9 @@ struct CourseInfoView: View {
                                 .fontWeight(.medium)
                                 .foregroundStyle(.secondary)
                             
-                            if course.type == .graded {
+                            if currentCourse.type == .graded {
                                 
-                                if let grade = course.grade {
+                                if let grade = currentCourse.grade {
                                     Text("\(grade)")
                                 } else {
                                     Text("Non disponibile")
@@ -101,7 +107,7 @@ struct CourseInfoView: View {
                     }
                 }
             }
-            .navigationTitle(course.name)
+            .navigationTitle(currentCourse.name)
             .navigationBarTitleDisplayMode(.large)
             
             .toolbar {
@@ -121,7 +127,7 @@ struct CourseInfoView: View {
             }
             
             .sheet(isPresented: $showingEditCourseSheet) {
-                //                EditCourseView(course: course)
+                EditCourseView(course: currentCourse, career: $career)
             }
             .alert("Eliminare il corso?", isPresented: $showingDeleteConfirmation) {
                 Button("Annulla", role: .cancel) { }
