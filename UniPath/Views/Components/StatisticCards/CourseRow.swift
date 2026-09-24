@@ -9,6 +9,10 @@ import SwiftUI
 struct CourseRow: View {
     
     let course: Course
+    @Binding var career: Career
+    
+    @State private var showingEditCourseSheet = false
+    @State private var showingDeleteConfirmation = false
     
     private var formattedDate: String {
         guard let date = course.date else { return "" }
@@ -43,8 +47,6 @@ struct CourseRow: View {
                     Text(course.status.rawValue)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                    
-                    
                 }
             }
             
@@ -71,9 +73,40 @@ struct CourseRow: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color(.secondarySystemGroupedBackground))
         )
+        
+        .contextMenu {
+            Button("Modifica", systemImage: "pencil") {
+                showingEditCourseSheet = true
+            }
+
+            Button("Elimina", systemImage: "trash", role: .destructive) {
+                showingDeleteConfirmation = true
+            }
+        }
+        .sheet(isPresented: $showingEditCourseSheet) {
+            EditCourseView(
+                course: course,
+                career: $career
+            )
+        }
+        .alert("Eliminare il corso?", isPresented: $showingDeleteConfirmation) {
+            Button("Annulla", role: .cancel) { }
+
+            Button("Elimina", role: .destructive) {
+                career.courses.removeAll {
+                    $0.id == course.id
+                }
+
+                CareerStorage.save(career)
+            }
+
+        } message: {
+            Text("Il corso verrà eliminato dalla tua carriera.")
+        }
     }
 }
 
-#Preview{
-    CourseRow(course: Course(name: "Anlisi 1", cfu: 9, type: .graded, year: 1, semester: .first, status: .completed, date: Date.now, grade: 27))
-}
+//#Preview{
+//    CourseRow(course: Course(name: "Anlisi 1", cfu: 9, type: .graded, year: 1, semester: .first, status: .completed, date: Date.now, grade: 27),
+//    )
+//}

@@ -40,7 +40,7 @@ struct LibrettoView: View {
                             NavigationLink {
                                 CourseInfoView(course: course, career: $career)
                             } label: {
-                                CourseRow(course: course)
+                                CourseRow(course: course, career: $career)
                             }
                             .buttonStyle(.plain)
                         }
