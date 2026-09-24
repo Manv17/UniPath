@@ -12,6 +12,7 @@ struct LibrettoView: View {
     @Binding var career: Career
     
     @State private var selectedFilter: LibrettoFilter = .all
+    @State private var selectedSort: LibrettoSort = .dateDescending
     
     @State private var showingAddCourseSheet = false
     @State private var newCourseType: CourseType = .graded
@@ -35,7 +36,7 @@ struct LibrettoView: View {
                         
                     } else {
                         
-                        ForEach(filteredCourses) { course in
+                        ForEach(sortedCourses) { course in
                             NavigationLink {
                                 CourseInfoView(course: course, career: $career)
                             } label: {
@@ -53,9 +54,109 @@ struct LibrettoView: View {
             )
             .navigationTitle("Libretto")
             .toolbarTitleDisplayMode(.inline)
+            
             .toolbar {
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Menu {
+                        
+                        Text("Ordina corsi")
+                        
+                        Menu("Voto") {
+                            
+                            Button {
+                                selectedSort = .gradeAscending
+                            } label: {
+                                if selectedSort == .gradeAscending {
+                                    Label(
+                                        "Crescente",
+                                        systemImage: "checkmark"
+                                    )
+                                } else {
+                                    Text("Crescente")
+                                }
+                            }
+                            
+                            Button {
+                                selectedSort = .gradeDescending
+                            } label: {
+                                if selectedSort == .gradeDescending {
+                                    Label(
+                                        "Decrescente",
+                                        systemImage: "checkmark"
+                                    )
+                                } else {
+                                    Text("Decrescente")
+                                }
+                            }
+                        }
+                        
+                        Menu("Data") {
+                            
+                            Button {
+                                selectedSort = .dateAscending
+                            } label: {
+                                if selectedSort == .dateAscending {
+                                    Label(
+                                        "Crescente",
+                                        systemImage: "checkmark"
+                                    )
+                                } else {
+                                    Text("Crescente")
+                                }
+                            }
+                            
+                            Button {
+                                selectedSort = .dateDescending
+                            } label: {
+                                if selectedSort == .dateDescending {
+                                    Label(
+                                        "Decrescente",
+                                        systemImage: "checkmark"
+                                    )
+                                } else {
+                                    Text("Decrescente")
+                                }
+                            }
+                        }
+                        
+                        Menu("Anno") {
+                            
+                            Button {
+                                selectedSort = .yearAscending
+                            } label: {
+                                if selectedSort == .yearAscending {
+                                    Label(
+                                        "Crescente",
+                                        systemImage: "checkmark"
+                                    )
+                                } else {
+                                    Text("Crescente")
+                                }
+                            }
+                            
+                            Button {
+                                selectedSort = .yearDescending
+                            } label: {
+                                if selectedSort == .yearDescending {
+                                    Label(
+                                        "Decrescente",
+                                        systemImage: "checkmark"
+                                    )
+                                } else {
+                                    Text("Decrescente")
+                                }
+                            }
+                        }
+                        
+                    } label: {
+                        Text(selectedSort.shortTitle)
+                    }
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
+                        
                         Button("Corso") {
                             newCourseType = .graded
                             showingAddCourseSheet = true
@@ -71,6 +172,7 @@ struct LibrettoView: View {
                     }
                 }
             }
+            
             .sheet(isPresented: $showingAddCourseSheet) {
                 AddCourseView(
                     career: $career,
@@ -115,6 +217,10 @@ struct LibrettoView: View {
                 course.status == .toDo
             }
         }
+    }
+    
+    private var sortedCourses: [Course] {
+        CourseSorter.sort(courses: filteredCourses,by: selectedSort)
     }
     
     private var emptyStateMessage: String {
