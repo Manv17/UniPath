@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DegreeType: String, CaseIterable, Codable {
+enum DegreeType: String, CaseIterable, Codable, Identifiable {
     case bachelor = "Triennale"
     case master = "Magistrale"
     case singleCycle = "Ciclo Unico"

@@ -41,4 +41,37 @@ struct Career: Codable {
             return 5
         }
     }
+    
+    private var academicYear: Int {
+        let calendar = Calendar.current
+        let now = Date()
+
+        let year = calendar.component(.year, from: now)
+        let month = calendar.component(.month, from: now)
+
+        let academicYearStart: Int
+
+        if month >= 10 {
+            academicYearStart = year
+        } else {
+            academicYearStart = year - 1
+        }
+
+        return max(
+            academicYearStart - enrollmentYear + 1,
+            1
+        )
+    }
+    
+    var currentAccademicYear: Int {
+        academicYear
+    }
+
+    var status: String {
+        if academicYear <= duration {
+            return "In corso"
+        } else {
+            return "Fuoricorso"
+        }
+    }
 }
