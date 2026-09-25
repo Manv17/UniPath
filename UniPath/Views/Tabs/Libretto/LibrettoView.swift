@@ -193,7 +193,6 @@ struct LibrettoView: View {
             }
         }
         .pickerStyle(.segmented)
-        .tint(.accentColor)
     }
     
     private var filteredCourses: [Course] {

@@ -22,7 +22,7 @@ struct MainTabView: View {
             }
             
             Tab("Profilo", systemImage: "person.crop.circle.fill") {
-                ProfileView()
+                ProfileView(career: $career)
             }
             
             Tab("Tessera", systemImage: "person.text.rectangle.fill", role: .search) {

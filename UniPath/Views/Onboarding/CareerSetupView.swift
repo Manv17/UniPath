@@ -21,19 +21,48 @@ struct CareerSetupView: View {
         NavigationStack {
             Form {
                 Section("Dati personali") {
-                    TextField("Nome e cognome", text: $fullName)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Nome e cognome")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                        
+                        TextField("Es: Marco Rossi", text: $fullName)
+                    }
                     
-                    TextField("Email", text: $email)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Email")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                        
+                        TextField("Email istituzionale", text: $email)
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+                    }
                     
-                    TextField("Matricola", text: $matricola)
-                        .keyboardType(.numberPad)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Matricola")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                        
+                        TextField("Numero di matricola studente", text: $matricola)
+                            .keyboardType(.numberPad)
+                    }
                 }
                 
                 Section("Carriera") {
+                    
+                    Picker("Tipo di laurea", selection: $degreeType) {
+                        ForEach(DegreeType.allCases, id: \.self) { degree in
+                            Text(degree.rawValue)
+                                .tag(degree)
+                        }
+                    }
+                    
                     Picker(
-                        "Anno di iscrizione",
+                        "Anno di immatricolazione",
                         selection: $enrollmentYear
                     ) {
                         let currentYear = Calendar.current.component(.year, from: Date())
@@ -42,13 +71,6 @@ struct CareerSetupView: View {
                         ForEach(minYear...currentYear + 1, id: \.self) { year in
                             Text(String(year))
                                 .tag(year)
-                        }
-                    }
-                    
-                    Picker("Tipo di laurea", selection: $degreeType) {
-                        ForEach(DegreeType.allCases, id: \.self) { degree in
-                            Text(degree.rawValue)
-                                .tag(degree)
                         }
                     }
                 }

@@ -27,7 +27,7 @@ struct AddCourseView: View {
         NavigationStack {
             Form {
                 Section("Dati corso") {
-                    TextField("Nome corso", text: $name)
+                    TextField("Nome corso (Es: Anatomia 1)", text: $name)
                     
                     Picker("CFU", selection: $cfu) {
                         ForEach(3...15, id: \.self) { cfu in
@@ -120,9 +120,9 @@ struct AddCourseView: View {
                                grade: finalGrade)
         
         career.courses.append(newCourse)
-
+        
         CareerStorage.save(career)
-
+        
         dismiss()
     }
 }
