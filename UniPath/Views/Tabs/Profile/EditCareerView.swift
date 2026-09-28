@@ -16,6 +16,9 @@ struct EditCareerView: View {
     @State private var editedMatricola = ""
     @State private var editedEnrollmentYear = 2026
     @State private var editedDegreeType: DegreeType = .bachelor
+    @State private var editedUniversity: University?
+    
+    @State private var showingUniversityPicker = false
     
     @Environment(\.dismiss) private var dismiss
     
@@ -66,8 +69,27 @@ struct EditCareerView: View {
                 
                 Section("Carriera") {
                     
+                    Button {
+                        showingUniversityPicker = true
+                    } label: {
+                        HStack {
+                            Text("Università")
+                                .foregroundStyle(.primary)
+
+                            Spacer()
+
+                            Text(editedUniversity?.shortName ?? "Non impostata")
+                                .foregroundStyle(.secondary)
+
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    
                     Picker(
-                        "Tipo di laurea",
+                        "Corso di laurea",
                         selection: $editedDegreeType
                     ) {
                         ForEach(DegreeType.allCases) { degreeType in
@@ -124,7 +146,14 @@ struct EditCareerView: View {
                             .trimmingCharacters(in: .whitespaces)
                             .isEmpty
                     )
+                    .buttonStyle(.glassProminent)
                 }
+            }
+            
+            .sheet(isPresented: $showingUniversityPicker) {
+                UniversityPickerView(
+                    selectedUniversity: $editedUniversity
+                )
             }
             
             .onAppear {
@@ -139,6 +168,7 @@ struct EditCareerView: View {
         editedMatricola = career.matricola
         editedEnrollmentYear = career.enrollmentYear
         editedDegreeType = career.degreeType
+        editedUniversity = career.university
     }
     
     private func saveChanges() {
@@ -147,6 +177,7 @@ struct EditCareerView: View {
         career.matricola = editedMatricola
         career.enrollmentYear = editedEnrollmentYear
         career.degreeType = editedDegreeType
+        career.university = editedUniversity
         
         CareerStorage.save(career)
         

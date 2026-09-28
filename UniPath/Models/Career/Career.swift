@@ -14,11 +14,13 @@ struct Career: Codable {
     var enrollmentYear: Int
     var degreeType: DegreeType
     var courses: [Course]
+    var university: University?
     
     init(
         fullName: String = "",
         email: String = "",
         matricola: String = "",
+        university: University? = nil,
         enrollmentYear: Int = Calendar.current.component(.year, from: Date()),
         degreeType: DegreeType = .bachelor,
         courses: [Course] = []
@@ -26,6 +28,7 @@ struct Career: Codable {
         self.fullName = fullName
         self.email = email
         self.matricola = matricola
+        self.university = university
         self.enrollmentYear = enrollmentYear
         self.degreeType = degreeType
         self.courses = courses
@@ -45,18 +48,18 @@ struct Career: Codable {
     private var academicYear: Int {
         let calendar = Calendar.current
         let now = Date()
-
+        
         let year = calendar.component(.year, from: now)
         let month = calendar.component(.month, from: now)
-
+        
         let academicYearStart: Int
-
+        
         if month >= 10 {
             academicYearStart = year
         } else {
             academicYearStart = year - 1
         }
-
+        
         return max(
             academicYearStart - enrollmentYear + 1,
             1
@@ -66,7 +69,7 @@ struct Career: Codable {
     var currentAccademicYear: Int {
         academicYear
     }
-
+    
     var status: String {
         if academicYear <= duration {
             return "In corso"

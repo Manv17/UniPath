@@ -16,6 +16,8 @@ struct CareerSetupView: View {
     @State private var matricola = ""
     @State private var enrollmentYear = Calendar.current.component(.year, from: Date())
     @State private var degreeType: DegreeType = .bachelor
+    @State private var university: University?
+    @State private var showingUniversityPicker = false
     
     var body: some View {
         NavigationStack {
@@ -54,7 +56,26 @@ struct CareerSetupView: View {
                 
                 Section("Carriera") {
                     
-                    Picker("Tipo di laurea", selection: $degreeType) {
+                    Button {
+                        showingUniversityPicker = true
+                    } label: {
+                        HStack {
+                            Text("Università")
+                                .foregroundStyle(.primary)
+                            
+                            Spacer()
+                            
+                            Text(university?.shortName ?? "Non impostata")
+                                .foregroundStyle(.secondary)
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    
+                    Picker("Corso di laurea", selection: $degreeType) {
                         ForEach(DegreeType.allCases, id: \.self) { degree in
                             Text(degree.rawValue)
                                 .tag(degree)
@@ -76,11 +97,18 @@ struct CareerSetupView: View {
                 }
             }
             .navigationTitle("Configura carriera")
+            
             .toolbar {
                 Button("Salva") {
                     saveCareer()
                 }
                 .buttonStyle(.glassProminent)
+            }
+            
+            .sheet(isPresented: $showingUniversityPicker) {
+                UniversityPickerView(
+                    selectedUniversity: $university
+                )
             }
         }
     }
@@ -90,9 +118,10 @@ struct CareerSetupView: View {
             fullName: fullName,
             email: email,
             matricola: matricola,
+            university: university,
             enrollmentYear: enrollmentYear,
             degreeType: degreeType,
-            courses: []
+            courses: [],
         )
         
         CareerStorage.save(career)

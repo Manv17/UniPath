@@ -35,6 +35,17 @@ struct ProfileView: View {
                 }
                 
                 Section("Dati corso di laurea") {
+                    
+                    LabeledContent("Università"){
+                        if let university = career.university {
+                            Text(university.shortName)
+                        }
+                        else {
+                            Text("Non impostata")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
                     LabeledContent("Corso di laurea"){
                         Text(career.degreeType.rawValue)
                     }
