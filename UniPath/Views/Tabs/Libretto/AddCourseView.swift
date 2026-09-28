@@ -27,7 +27,14 @@ struct AddCourseView: View {
         NavigationStack {
             Form {
                 Section("Dati corso") {
-                    TextField("Nome corso (Es: Anatomia 1)", text: $name)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Nome corso")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+                        
+                        TextField("Es: Anatomia 1", text: $name)
+                    }
                     
                     Picker("CFU", selection: $cfu) {
                         ForEach(3...15, id: \.self) { cfu in
