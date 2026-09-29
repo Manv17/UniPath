@@ -10,9 +10,8 @@ import SwiftUI
 struct ContentView: View {
 
     @AppStorage("hasSeenWelcome") private var hasSeenWelcome = false
-
+    
     @State private var career: Career?
-    @State private var hasStudentID = false
 
     var body: some View {
 
@@ -29,12 +28,6 @@ struct ContentView: View {
                     career = newCareer
                 }
 
-            } else if !hasStudentID {
-
-                StudentIDSetupView {
-                    hasStudentID = true
-                }
-
             } else {
 
                 MainTabView(career: career!)
@@ -47,8 +40,11 @@ struct ContentView: View {
 
     private func loadData() {
         career = CareerStorage.load()
-        hasStudentID = StudentIDStorage.load() != nil
     }
+}
+
+#Preview {
+    ContentView()
 }
 
 #Preview {

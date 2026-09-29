@@ -68,6 +68,7 @@ struct UniversityPickerView: View {
                             
                             if selectedUniversity?.id == university.id {
                                 Image(systemName: "checkmark")
+                                    .foregroundStyle(.tint)
                             }
                         }
                     }

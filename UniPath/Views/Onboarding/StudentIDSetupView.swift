@@ -19,7 +19,7 @@ struct StudentIDSetupView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Aggiungi il codice della tua tessera studente") {
+                Section {
                     if let selectedImageData,
                        let uiImage = UIImage(data: selectedImageData) {
 
@@ -38,18 +38,19 @@ struct StudentIDSetupView: View {
                             systemImage: "photo"
                         )
                     }
+                } header: {
+                    Text("Tessera studente")
+                } footer: {
+                    Text(
+                        "Puoi aggiungere il QR code della tua tessera studente ora oppure farlo più tardi dalle impostazioni del profilo."
+                    )
                 }
             }
             .navigationTitle("Tessera studente")
+            .navigationBarTitleDisplayMode(.large)
+            
             .onChange(of: selectedItem) { _, newItem in
                 loadImage(from: newItem)
-            }
-            .toolbar {
-                Button("Continua") {
-                    saveStudentID()
-                }
-                .disabled(selectedImageData == nil)
-                .buttonStyle(.glassProminent)
             }
         }
     }
@@ -76,7 +77,6 @@ struct StudentIDSetupView: View {
         }
 
         StudentIDStorage.save(selectedImageData)
-
         onCompleted()
     }
 }

@@ -20,13 +20,19 @@ struct CourseRow: View {
     }
     
     private var formattedGrade: String? {
-        
-        if (course.type == .passFail) {
-            return course.status == CourseStatus.completed ? "Idoneo" : nil
-        } else {
-            guard let grade = course.grade else { return nil }
-            return "\(grade)"
+        if course.type == .passFail {
+            return course.status == .completed ? "Idoneo" : nil
         }
+        
+        guard let grade = course.grade else {
+            return nil
+        }
+        
+        if grade == 30 && course.honor {
+            return "30L"
+        }
+        
+        return "\(grade)"
     }
     
     var body: some View {
@@ -78,7 +84,7 @@ struct CourseRow: View {
             Button("Modifica", systemImage: "pencil") {
                 showingEditCourseSheet = true
             }
-
+            
             Button("Elimina", systemImage: "trash", role: .destructive) {
                 showingDeleteConfirmation = true
             }
@@ -91,15 +97,15 @@ struct CourseRow: View {
         }
         .alert("Eliminare il corso?", isPresented: $showingDeleteConfirmation) {
             Button("Annulla", role: .cancel) { }
-
+            
             Button("Elimina", role: .destructive) {
                 career.courses.removeAll {
                     $0.id == course.id
                 }
-
+                
                 CareerStorage.save(career)
             }
-
+            
         } message: {
             Text("Il corso verrà eliminato dalla tua carriera.")
         }

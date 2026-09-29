@@ -9,7 +9,8 @@ import Foundation
 
 struct CareerStatistics {
     let courses: [Course]
-    
+    let honorValue: Double
+
     var completedCFU: Int {
         var totalCFU = 0
 
@@ -21,15 +22,24 @@ struct CareerStatistics {
 
         return totalCFU
     }
-    
+
     var weightedAverage: Double? {
         var totalCFU = 0
         var weightedSum = 0.0
 
         for course in courses {
-            if course.status == .completed, let grade = course.grade {
+            if course.status == .completed,
+               let grade = course.grade {
+
                 totalCFU += course.cfu
-                weightedSum += Double(grade * course.cfu)
+
+                var value = Double(grade)
+
+                if grade == 30 && course.honor {
+                    value = honorValue
+                }
+
+                weightedSum += value * Double(course.cfu)
             }
         }
 
@@ -39,12 +49,13 @@ struct CareerStatistics {
 
         return weightedSum / Double(totalCFU)
     }
-    
+
     var graduationBase: Double {
         guard let average = weightedAverage else {
             return 0.0
         }
 
-        return average / 30.0 * 110.0
+        let base = average / 30.0 * 110.0
+        return min(base, 110)
     }
 }

@@ -28,6 +28,22 @@ struct CourseInfoView: View {
         } ?? course
     }
     
+    private var formattedGrade: String? {
+        if currentCourse.type == .passFail {
+            return currentCourse.status == .completed ? "Idoneo" : nil
+        }
+        
+        guard let grade = currentCourse.grade else {
+            return nil
+        }
+        
+        if grade == 30 && currentCourse.honor {
+            return "30L"
+        }
+        
+        return "\(grade)"
+    }
+    
     var body: some View {
         NavigationStack{
             Form {
@@ -84,24 +100,16 @@ struct CourseInfoView: View {
                         }
                     }
                     
-                    if (currentCourse.status == .completed) {
-                        VStack(alignment: .leading){
-                            
-                            Text("Voto")
-                                .font(.callout)
-                                .fontWeight(.medium)
-                                .foregroundStyle(.secondary)
-                            
-                            if currentCourse.type == .graded {
+                    if currentCourse.status == .completed {
+                        if let formattedGrade {
+                            VStack(alignment: .leading) {
                                 
-                                if let grade = currentCourse.grade {
-                                    Text("\(grade)")
-                                } else {
-                                    Text("Non disponibile")
-                                }
+                                Text(currentCourse.type == .passFail ? "Esito" : "Voto")
+                                    .font(.callout)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(.secondary)
                                 
-                            } else {
-                                Text("Idoneo")
+                                Text(formattedGrade)
                             }
                         }
                     }

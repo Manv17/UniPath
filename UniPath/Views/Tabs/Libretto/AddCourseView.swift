@@ -20,6 +20,7 @@ struct AddCourseView: View {
     @State private var year: Int = 1
     @State private var semester: CourseSemester = .first
     @State private var status: CourseStatus = .toDo
+    @State private var honor: Bool = false
     
     @Environment(\.dismiss) private var dismiss
     
@@ -77,6 +78,14 @@ struct AddCourseView: View {
                         )
                         .disabled(status != CourseStatus.completed)
                         .opacity(status == .completed ? 1 : 0.4)
+                    }
+                    
+                    if type == .graded {
+                        Toggle("Lode", isOn: $honor)
+                            .disabled(status != .completed ||
+                                      grade != 30)
+                            .opacity(status == .completed &&
+                                     grade == 30 ? 1 : 0.4)
                     }
                 }
             }
@@ -141,6 +150,6 @@ struct AddCourseView: View {
     
     AddCourseView(
         career: $career,
-        type: .passFail
+        type: .graded
     )
 }

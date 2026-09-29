@@ -17,6 +17,7 @@ struct Course: Identifiable, Codable, Hashable {
     var status: CourseStatus
     var date: Date?
     var grade: Int?
+    var honor: Bool
 
     init(
         id: UUID = UUID(),
@@ -27,7 +28,8 @@ struct Course: Identifiable, Codable, Hashable {
         semester: CourseSemester,
         status: CourseStatus = .toDo,
         date: Date? = nil,
-        grade: Int? = nil
+        grade: Int? = nil,
+        honor: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -38,5 +40,6 @@ struct Course: Identifiable, Codable, Hashable {
         self.status = status
         self.date = date
         self.grade = grade
+        self.honor = honor
     }
 }

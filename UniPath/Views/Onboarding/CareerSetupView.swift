@@ -9,111 +9,145 @@ import SwiftUI
 
 struct CareerSetupView: View {
     
-    let onCareerSaved: (Career) -> Void
+    let onComplete: (Career) -> Void
     
+    @State private var currentStep = 0
+    
+    // Dati personali
     @State private var fullName = ""
     @State private var email = ""
     @State private var matricola = ""
-    @State private var enrollmentYear = Calendar.current.component(.year, from: Date())
-    @State private var degreeType: DegreeType = .bachelor
+    
+    // Carriera
     @State private var university: University?
-    @State private var showingUniversityPicker = false
+    @State private var enrollmentYear =
+    Calendar.current.component(.year, from: Date())
+    @State private var degreeType: DegreeType = .bachelor
+    
+    // Lode
+    @State private var honorValue = 30.0
     
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("Dati personali") {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Nome e cognome")
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.secondary)
-                        
-                        TextField("Es: Marco Rossi", text: $fullName)
+        VStack(spacing: 0) {
+            
+            Group {
+                switch currentStep {
+                case 0:
+                    PersonalSetupView(
+                        fullName: $fullName,
+                        email: $email,
+                        matricola: $matricola
+                    )
+                    
+                case 1:
+                    AcademicSetupView(
+                        university: $university,
+                        enrollmentYear: $enrollmentYear,
+                        degreeType: $degreeType
+                    )
+                    
+                case 2:
+                    GradeSetupView(
+                        honorValue: $honorValue
+                    )
+                    
+                case 3:
+                    StudentIDSetupView {
+                        createCareer()
                     }
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Email")
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.secondary)
-                        
-                        TextField("Email istituzionale", text: $email)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Matricola")
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.secondary)
-                        
-                        TextField("Numero di matricola studente", text: $matricola)
-                            .keyboardType(.numberPad)
-                    }
-                }
-                
-                Section("Carriera") {
-                    
-                    Button {
-                        showingUniversityPicker = true
-                    } label: {
-                        HStack {
-                            Text("Università")
-                                .foregroundStyle(.primary)
-                            
-                            Spacer()
-                            
-                            Text(university?.shortName ?? "Non impostata")
-                                .foregroundStyle(.secondary)
-                            
-                            Image(systemName: "chevron.right")
-                                .font(.caption)
-                                .foregroundStyle(.tertiary)
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    
-                    Picker("Corso di laurea", selection: $degreeType) {
-                        ForEach(DegreeType.allCases, id: \.self) { degree in
-                            Text(degree.rawValue)
-                                .tag(degree)
-                        }
-                    }
-                    
-                    Picker(
-                        "Anno di immatricolazione",
-                        selection: $enrollmentYear
-                    ) {
-                        let currentYear = Calendar.current.component(.year, from: Date())
-                        let minYear = currentYear - 10
-                        
-                        ForEach(minYear...currentYear + 1, id: \.self) { year in
-                            Text(String(year))
-                                .tag(year)
-                        }
-                    }
+                default:
+                    EmptyView()
                 }
             }
-            .navigationTitle("Configura carriera")
             
-            .toolbar {
-                Button("Salva") {
-                    saveCareer()
-                }
-                .buttonStyle(.glassProminent)
-            }
+            progressIndicator
+                .padding(.horizontal)
+                .padding(.top)
             
-            .sheet(isPresented: $showingUniversityPicker) {
-                UniversityPickerView(
-                    selectedUniversity: $university
-                )
+            navigationButtons
+                .padding()
+        }
+        .background(
+            Color(uiColor: .systemGroupedBackground)
+                .ignoresSafeArea()
+        )
+    }
+    
+    private var progressIndicator: some View {
+        HStack(spacing: 8) {
+            ForEach(0..<4, id: \.self) { step in
+                Capsule()
+                    .fill(
+                        step <= currentStep
+                        ? Color.accentColor
+                        : Color.secondary.opacity(0.2)
+                    )
+                    .frame(height: 6)
             }
         }
     }
     
-    private func saveCareer() {
+    private var navigationButtons: some View {
+        HStack(spacing: 12) {
+            
+            if currentStep > 0 {
+                Button("Indietro") {
+                    currentStep -= 1
+                }
+                .controlSize(.large)
+            }
+            
+            Spacer()
+            
+            if currentStep == 3 {
+                Button("Salta"){
+                    continueOnboarding()
+                }
+                .buttonStyle(.glass)
+                .controlSize(.large)
+            }
+            
+            Button("Avanti") {
+                continueOnboarding()
+            }
+            .buttonStyle(.glassProminent)
+            .disabled(!canContinue)
+            .controlSize(.large)
+        }
+    }
+    
+    private var canContinue: Bool {
+        switch currentStep {
+        case 0:
+            return !fullName
+                .trimmingCharacters(in: .whitespaces)
+                .isEmpty
+            
+        case 1:
+            return true
+            
+        case 2:
+            return honorValue >= 30
+            
+        case 3:
+            return true
+            
+        default:
+            return false
+        }
+    }
+    
+    private func continueOnboarding() {
+        if currentStep < 3 {
+            currentStep += 1
+            return
+        }
+        
+        createCareer()
+    }
+    
+    private func createCareer() {
         let career = Career(
             fullName: fullName,
             email: email,
@@ -121,11 +155,12 @@ struct CareerSetupView: View {
             university: university,
             enrollmentYear: enrollmentYear,
             degreeType: degreeType,
-            courses: [],
+            honorValue: honorValue
         )
         
         CareerStorage.save(career)
-        onCareerSaved(career)
+        
+        onComplete(career)
     }
 }
 

@@ -18,6 +18,7 @@ struct EditCourseView: View {
     @State private var editedYear: Int
     @State private var editedSemester: CourseSemester
     @State private var editedStatus: CourseStatus
+    @State private var editedHonor: Bool = false
     
     @Environment(\.dismiss) private var dismiss
     
@@ -90,6 +91,14 @@ struct EditCourseView: View {
                         .disabled(editedStatus != .completed)
                         .opacity(editedStatus == .completed ? 1 : 0.4)
                     }
+                    
+                    if course.type == .graded {
+                        Toggle("Lode", isOn: $editedHonor)
+                            .disabled(editedStatus != .completed ||
+                                      editedGrade != 30)
+                            .opacity(editedStatus == .completed &&
+                                     editedGrade == 30 ? 1 : 0.4)
+                    }
                 }
             }
             .navigationTitle(course.name)
@@ -107,6 +116,7 @@ struct EditCourseView: View {
                         updatedCourse.semester = editedSemester
                         updatedCourse.status = editedStatus
                         updatedCourse.date = editedStatus == .toDo ? nil : editedDate
+                        updatedCourse.honor = editedHonor
                         
                         if updatedCourse.type == .graded && editedStatus == .completed {
                             updatedCourse.grade = editedGrade ?? 18
