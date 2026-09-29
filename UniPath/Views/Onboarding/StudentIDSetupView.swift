@@ -11,10 +11,9 @@ import PhotosUI
 
 struct StudentIDSetupView: View {
 
-    let onCompleted: () -> Void
+    @Binding var selectedImageData: Data?
 
     @State private var selectedItem: PhotosPickerItem?
-    @State private var selectedImageData: Data?
 
     var body: some View {
         NavigationStack {
@@ -70,17 +69,4 @@ struct StudentIDSetupView: View {
             }
         }
     }
-
-    private func saveStudentID() {
-        guard let selectedImageData else {
-            return
-        }
-
-        StudentIDStorage.save(selectedImageData)
-        onCompleted()
-    }
-}
-
-#Preview {
-    StudentIDSetupView{}
 }

@@ -8,11 +8,42 @@
 import SwiftUI
 
 struct ReadySetupView: View {
+
+    let name: String
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 24) {
+
+            Spacer()
+
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 80))
+                .foregroundStyle(.tint)
+
+            VStack(spacing: 8) {
+
+                Text("Tutto pronto!")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+
+                Text("La tua carriera è stata configurata.")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+            }
+
+            if !name.isEmpty {
+                Text("Benvenuto, \(name).")
+                    .font(.headline)
+            }
+
+            Spacer()
+        }
+        .padding()
     }
 }
 
 #Preview {
-    ReadySetupView()
+    ReadySetupView(
+        name: "Manveer"
+    )
 }
