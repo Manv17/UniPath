@@ -56,7 +56,7 @@ struct AddCourseView: View {
                     }
                 }
                 
-                Section("Stato e valutazione"){
+                Section("Stato"){
                     Picker("Stato", selection: $status) {
                         ForEach(CourseStatus.allCases, id: \.self) { status in
                             Text(status.rawValue).tag(status)
@@ -66,8 +66,12 @@ struct AddCourseView: View {
                     DatePicker("Data", selection: $selectedDate, displayedComponents: .date)
                         .disabled(status == .toDo)
                         .opacity(status == .completed  || status == .planned ? 1 : 0.4)
-                    
-                    if (type == .graded) {
+                }
+                
+                
+                if (type == .graded){
+                    Section("Valutazione"){
+                        
                         Stepper(
                             "Voto: \(grade ?? 18)",
                             value: Binding(
@@ -78,14 +82,29 @@ struct AddCourseView: View {
                         )
                         .disabled(status != CourseStatus.completed)
                         .opacity(status == .completed ? 1 : 0.4)
-                    }
-                    
-                    if type == .graded {
-                        Toggle("Lode", isOn: $honor)
-                            .disabled(status != .completed ||
-                                      grade != 30)
-                            .opacity(status == .completed &&
-                                     grade == 30 ? 1 : 0.4)
+                        
+                        Button {
+                            honor.toggle()
+                        } label: {
+                            HStack {
+                                Text("Lode")
+                                    .foregroundStyle(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: honor ? "checkmark.circle.fill" : "circle")
+                                    .font(.title2)
+                                    .foregroundStyle(
+                                        honor ? Color.accentColor : .secondary
+                                    )
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(status != .completed ||
+                                  grade != 30)
+                        .opacity(status == .completed &&
+                                 grade == 30 ? 1 : 0.4)
+                        
                     }
                 }
             }

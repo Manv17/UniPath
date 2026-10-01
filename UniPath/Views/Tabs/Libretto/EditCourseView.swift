@@ -36,6 +36,7 @@ struct EditCourseView: View {
         _editedYear = State(initialValue: course.year)
         _editedSemester = State(initialValue: course.semester)
         _editedStatus = State(initialValue: course.status)
+        _editedHonor = State(initialValue: course.honor)
     }
     
     var body: some View {
@@ -68,7 +69,7 @@ struct EditCourseView: View {
                     
                 }
                 
-                Section("Stato e valutazione"){
+                Section("Stato"){
                     Picker("Stato", selection: $editedStatus) {
                         ForEach(CourseStatus.allCases, id: \.self) { status in
                             Text(status.rawValue).tag(status)
@@ -78,8 +79,11 @@ struct EditCourseView: View {
                     DatePicker("Data", selection: $editedDate, displayedComponents: .date)
                         .disabled(editedStatus == .toDo)
                         .opacity(editedStatus == .completed || editedStatus == .planned ? 1 : 0.4)
-                    
-                    if (course.type == .graded) {
+                }
+                
+                if (course.type == .graded){
+                    Section("Valutazione"){
+                        
                         Stepper(
                             "Voto: \(editedGrade ??  18)",
                             value: Binding(
@@ -90,16 +94,31 @@ struct EditCourseView: View {
                         )
                         .disabled(editedStatus != .completed)
                         .opacity(editedStatus == .completed ? 1 : 0.4)
-                    }
-                    
-                    if course.type == .graded {
-                        Toggle("Lode", isOn: $editedHonor)
-                            .disabled(editedStatus != .completed ||
-                                      editedGrade != 30)
-                            .opacity(editedStatus == .completed &&
-                                     editedGrade == 30 ? 1 : 0.4)
+                        
+                        Button {
+                            editedHonor.toggle()
+                        } label: {
+                            HStack {
+                                Text("Lode")
+                                    .foregroundStyle(.primary)
+                                
+                                Spacer()
+                                
+                                Image(systemName: editedHonor ? "checkmark.circle.fill" : "circle")
+                                    .font(.title2)
+                                    .foregroundStyle(
+                                        editedHonor ? Color.accentColor : .secondary
+                                    )
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(editedStatus != .completed ||
+                                  editedGrade != 30)
+                        .opacity(editedStatus == .completed &&
+                                 editedGrade == 30 ? 1 : 0.4)
                     }
                 }
+                
             }
             .navigationTitle(course.name)
             .navigationBarTitleDisplayMode(.large)
@@ -116,13 +135,16 @@ struct EditCourseView: View {
                         updatedCourse.semester = editedSemester
                         updatedCourse.status = editedStatus
                         updatedCourse.date = editedStatus == .toDo ? nil : editedDate
-                        updatedCourse.honor = editedHonor
+                        
                         
                         if updatedCourse.type == .graded && editedStatus == .completed {
                             updatedCourse.grade = editedGrade ?? 18
                         } else {
                             updatedCourse.grade = nil
                         }
+                        
+                        updatedCourse.honor = updatedCourse.type == .graded &&
+                        editedStatus == .completed && editedGrade == 30 && editedHonor
                         
                         if let index = career.courses.firstIndex(
                             where: { currentCourse in
@@ -153,10 +175,8 @@ struct EditCourseView: View {
                 }
             }
         }
-        
     }
 }
-
 //#Preview {
 //    EditCourseView()
 //}
