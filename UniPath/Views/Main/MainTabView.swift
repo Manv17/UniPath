@@ -26,7 +26,7 @@ struct MainTabView: View {
             }
             
             Tab("Tessera", systemImage: "person.text.rectangle.fill", role: .search) {
-                StudentIDView()
+                StudentIDView(career: $career)
             }
         }
     }
@@ -35,7 +35,9 @@ struct MainTabView: View {
 #Preview {
     MainTabView(
         career: Career(
-            fullName: "Mario Rossi"
+            fullName: "Mario Rossi",
+            email: "3408@gmial.com",
+            matricola: "1111"
         )
     )
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditCareerView: View {
     
@@ -17,6 +18,8 @@ struct EditCareerView: View {
     @State private var editedEnrollmentYear = 2026
     @State private var editedDegreeType: DegreeType = .bachelor
     @State private var editedUniversity: University?
+    @State private var selectedImageData: Data?
+    @State private var selectedItem: PhotosPickerItem?
     
     @State private var showingUniversityPicker = false
     
@@ -75,12 +78,12 @@ struct EditCareerView: View {
                         HStack {
                             Text("Università")
                                 .foregroundStyle(.primary)
-
+                            
                             Spacer()
-
+                            
                             Text(editedUniversity?.shortName ?? "Non impostata")
                                 .foregroundStyle(.secondary)
-
+                            
                             Image(systemName: "chevron.right")
                                 .font(.caption)
                                 .foregroundStyle(.tertiary)
@@ -117,6 +120,38 @@ struct EditCareerView: View {
                             Text(String(year))
                                 .tag(year)
                         }
+                    }
+                }
+                
+                Section("Codice tessera"){
+                    if let imageData = selectedImageData,
+                       let uiImage = UIImage(data: imageData) {
+                        
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 150)
+                        
+                        Button(
+                            "Rimuovi QR code",
+                            systemImage: "trash",
+                            role: .destructive
+                        ) {
+                            selectedImageData = nil
+                            StudentIDStorage.delete()
+                        }
+                    }
+                    
+                    PhotosPicker(
+                        selection: $selectedItem,
+                        matching: .images
+                    ) {
+                        Label(
+                            selectedImageData == nil
+                            ? "Seleziona QR code"
+                            : "Sostituisci QR code",
+                            systemImage: "photo"
+                        )
                     }
                 }
             }
@@ -159,6 +194,10 @@ struct EditCareerView: View {
             .onAppear {
                 loadData()
             }
+            
+            .onChange(of: selectedItem) { _, newItem in
+                loadImage(from: newItem)
+            }
         }
     }
     
@@ -169,6 +208,8 @@ struct EditCareerView: View {
         editedEnrollmentYear = career.enrollmentYear
         editedDegreeType = career.degreeType
         editedUniversity = career.university
+        
+        selectedImageData = StudentIDStorage.load()
     }
     
     private func saveChanges() {
@@ -181,7 +222,27 @@ struct EditCareerView: View {
         
         CareerStorage.save(career)
         
+        if let selectedImageData {
+            StudentIDStorage.save(selectedImageData)
+        }
+        
         dismiss()
+    }
+    
+    private func loadImage(from item: PhotosPickerItem?) {
+        guard let item else {
+            return
+        }
+        
+        Task {
+            do {
+                if let data = try await item.loadTransferable(type: Data.self) {
+                    selectedImageData = data
+                }
+            } catch {
+                print("Errore nel caricamento del QR code: \(error)")
+            }
+        }
     }
 }
 

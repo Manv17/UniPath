@@ -74,7 +74,25 @@ struct Career: Codable {
     }
     
     var status: String {
-        if academicYear <= duration {
+        let calendar = Calendar.current
+        let now = Date()
+
+        var endComponents = DateComponents()
+        endComponents.year = enrollmentYear + duration
+        endComponents.month = 10
+        endComponents.day = 1
+
+        guard let academicCourseEnd = calendar.date(from: endComponents),
+              let statusDeadline = calendar.date(
+                byAdding: .month,
+                value: 6,
+                to: academicCourseEnd
+              )
+        else {
+            return "In corso"
+        }
+
+        if now < statusDeadline {
             return "In corso"
         } else {
             return "Fuoricorso"
