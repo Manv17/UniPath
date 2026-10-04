@@ -1,56 +1,44 @@
 //
-//  CourseRow.swift
+//  FinalExamRow.swift
 //  UniPath
 //
-//  Created by Manveer Singh on 29/03/26.
+//  Created by Manveer Singh on 04/10/2026.
 //
+
 import SwiftUI
 
-struct CourseRow: View {
+struct FinalExamRow: View {
     
-    let course: Course
+    let finalExam: FinalExam
     @Binding var career: Career
     
-    @State private var showingEditCourseSheet = false
+    @State private var showingEditFinalExamSheet = false
     @State private var showingDeleteConfirmation = false
     
     private var formattedDate: String {
-        guard let date = course.date else { return "" }
+        guard let date = finalExam.date else { return "" }
         return date.formatted(date: .numeric, time: .omitted)
     }
     
-    private var formattedGrade: String? {
-        if course.type == .passFail {
-            return course.status == .completed ? "Idoneo" : nil
-        }
-        
-        guard let grade = course.grade else {
-            return nil
-        }
-        
-        if grade == 30 && course.honor {
-            return "30L"
-        }
-        
-        return "\(grade)"
-    }
-    
     var body: some View {
-        HStack(alignment: .bottom, spacing: 12) {
+        
+        HStack(spacing: 12) {
+            
             VStack(alignment: .leading, spacing: 8) {
-                Text(course.name)
+                
+                Text("Prova finale (Tesi)")
                     .font(.headline)
                     .fontWeight(.semibold)
                 
-                HStack(spacing: 8) {
-                    Text("\(course.cfu) CFU")
+                HStack {
+                    Text("\(finalExam.cfu) CFU")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     
                     Text("•")
                         .foregroundStyle(.tertiary)
                     
-                    Text(course.status.rawValue)
+                    Text(finalExam.isCompleted ? "Completata" : "Da fare")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -58,19 +46,18 @@ struct CourseRow: View {
             
             Spacer()
             
-            VStack(alignment: .trailing,spacing: 8) {
-                
-                if let formattedGrade {
-                    
-                    Text(formattedGrade)
+            if finalExam.isCompleted {
+                VStack(alignment: .trailing, spacing: 8) {
+
+                    Text("\(finalExam.points)/\(finalExam.maxPoints)")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
+
+                    Text(formattedDate)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
-                
-                Text(formattedDate)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
             }
         }
         .padding(16)
@@ -82,7 +69,7 @@ struct CourseRow: View {
         
         .contextMenu {
             Button("Modifica", systemImage: "pencil") {
-                showingEditCourseSheet = true
+                showingEditFinalExamSheet = true
             }
             
             Button("Elimina", systemImage: "trash", role: .destructive) {
@@ -90,31 +77,25 @@ struct CourseRow: View {
             }
         }
         
-        .sheet(isPresented: $showingEditCourseSheet) {
-            EditCourseView(
-                course: course,
-                career: $career
-            )
+        .sheet(isPresented: $showingEditFinalExamSheet) {
+            EditFinalExamView(finalExam: finalExam, career: $career)
         }
         
-        .alert("Eliminare il corso?", isPresented: $showingDeleteConfirmation) {
+        .alert("Eliminare la prova finale?", isPresented: $showingDeleteConfirmation) {
             Button("Annulla", role: .cancel) { }
             
             Button("Elimina", role: .destructive) {
-                career.courses.removeAll {
-                    $0.id == course.id
-                }
+                career.finalExam = nil
                 
                 CareerStorage.save(career)
             }
             
         } message: {
-            Text("Il corso verrà eliminato dalla tua carriera.")
+            Text("La prova finale verrà eliminata dalla tua carriera.")
         }
     }
 }
 
-//#Preview{
-//    CourseRow(course: Course(name: "Anlisi 1", cfu: 9, type: .graded, year: 1, semester: .first, status: .completed, date: Date.now, grade: 27),
-//    )
+//#Preview {
+//    FinalExamRow(finalExam: FinalExam(cfu: 3, maxPoints: 3))
 //}

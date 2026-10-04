@@ -10,6 +10,7 @@ import Foundation
 struct CareerStatistics {
     let courses: [Course]
     let honorValue: Double
+    let finalExam: FinalExam?
 
     var completedCFU: Int {
         var totalCFU = 0
@@ -17,6 +18,12 @@ struct CareerStatistics {
         for course in courses {
             if course.status == .completed {
                 totalCFU += course.cfu
+            }
+        }
+        
+        if let finalExam = finalExam {
+            if finalExam.isCompleted{
+                totalCFU += finalExam.cfu
             }
         }
 

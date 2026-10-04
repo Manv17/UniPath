@@ -13,7 +13,7 @@ struct HomeView: View {
 
     var body: some View {
 
-        let statistics = CareerStatistics(courses: career.courses, honorValue: career.honorValue)
+        let statistics = CareerStatistics(courses: career.courses, honorValue: career.honorValue, finalExam: career.finalExam)
 
         NavigationStack {
             ScrollView {

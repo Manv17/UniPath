@@ -17,6 +17,7 @@ struct Career: Codable {
     var university: University?
     var honorValue: Double
     var major: String
+    var finalExam: FinalExam?
     
     init(
         fullName: String = "",
@@ -27,7 +28,8 @@ struct Career: Codable {
         enrollmentYear: Int = Calendar.current.component(.year, from: Date()),
         degreeType: DegreeType = .bachelor,
         courses: [Course] = [],
-        honorValue: Double = 30.0
+        honorValue: Double = 30.0,
+        finalExam: FinalExam? = nil
     ) {
         self.fullName = fullName
         self.email = email
@@ -38,6 +40,7 @@ struct Career: Codable {
         self.courses = courses
         self.honorValue = honorValue
         self.major = major
+        self.finalExam = finalExam
     }
     
     var duration: Int {

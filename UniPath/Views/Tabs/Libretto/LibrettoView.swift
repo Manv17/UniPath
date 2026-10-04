@@ -17,6 +17,8 @@ struct LibrettoView: View {
     @State private var showingAddCourseSheet = false
     @State private var newCourseType: CourseType = .graded
     
+    @State private var showingAddFinalExam = false
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -24,7 +26,7 @@ struct LibrettoView: View {
                     
                     filterPicker
                     
-                    if filteredCourses.isEmpty {
+                    if filteredCourses.isEmpty && !showFinalExam{
                         
                         ContentUnavailableView(
                             "Nessun corso",
@@ -41,6 +43,19 @@ struct LibrettoView: View {
                                 CourseInfoView(course: course, career: $career)
                             } label: {
                                 CourseRow(course: course, career: $career)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        
+                        if showFinalExam, let finalExam = career.finalExam {
+                            
+                            NavigationLink{
+                                FinalExamInfoView(finalExam: finalExam, career: $career)
+                            } label: {
+                                FinalExamRow(
+                                    finalExam: finalExam,
+                                    career: $career
+                                )
                             }
                             .buttonStyle(.plain)
                         }
@@ -167,6 +182,12 @@ struct LibrettoView: View {
                             showingAddCourseSheet = true
                         }
                         
+                        if career.finalExam == nil {
+                            Button("Prova finale (Tesi)") {
+                                showingAddFinalExam = true
+                            }
+                        }
+                        
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -178,6 +199,10 @@ struct LibrettoView: View {
                     career: $career,
                     type: newCourseType
                 )
+            }
+            
+            .sheet(isPresented: $showingAddFinalExam) {
+                AddFinalExamView(career: $career)
             }
         }
     }
@@ -236,6 +261,28 @@ struct LibrettoView: View {
             
         case .toDo:
             return "Non ci sono corsi da fare"
+        }
+    }
+    
+    private var showFinalExam: Bool {
+
+        guard let finalExam = career.finalExam else {
+            return false
+        }
+
+        switch selectedFilter {
+
+        case .all:
+            return true
+
+        case .completed:
+            return finalExam.isCompleted
+
+        case .planned:
+            return false
+
+        case .toDo:
+            return !finalExam.isCompleted
         }
     }
 }
