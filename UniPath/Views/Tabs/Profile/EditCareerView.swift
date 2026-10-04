@@ -18,8 +18,11 @@ struct EditCareerView: View {
     @State private var editedEnrollmentYear = 2026
     @State private var editedDegreeType: DegreeType = .bachelor
     @State private var editedUniversity: University?
+    @State private var editedMajor = ""
+   
     @State private var selectedImageData: Data?
     @State private var selectedItem: PhotosPickerItem?
+   
     
     @State private var showingUniversityPicker = false
     
@@ -70,7 +73,7 @@ struct EditCareerView: View {
                     }
                 }
                 
-                Section("Carriera") {
+                Section("Corso di laurea") {
                     
                     Button {
                         showingUniversityPicker = true
@@ -90,6 +93,18 @@ struct EditCareerView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Corso di laurea")
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.secondary)
+
+                        TextField(
+                            "Es: Scienze Biologiche",
+                            text: $editedMajor
+                        )
+                    }
                     
                     Picker(
                         "Corso di laurea",
@@ -208,6 +223,7 @@ struct EditCareerView: View {
         editedEnrollmentYear = career.enrollmentYear
         editedDegreeType = career.degreeType
         editedUniversity = career.university
+        editedMajor = career.major
         
         selectedImageData = StudentIDStorage.load()
     }
@@ -219,6 +235,7 @@ struct EditCareerView: View {
         career.enrollmentYear = editedEnrollmentYear
         career.degreeType = editedDegreeType
         career.university = editedUniversity
+        career.major = editedMajor
         
         CareerStorage.save(career)
         

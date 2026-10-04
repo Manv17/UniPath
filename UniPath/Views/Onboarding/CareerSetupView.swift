@@ -23,6 +23,7 @@ struct CareerSetupView: View {
     @State private var enrollmentYear =
         Calendar.current.component(.year, from: Date())
     @State private var degreeType: DegreeType = .bachelor
+    @State private var major: String = ""
 
     // Lode
     @State private var honorValue = 30.0
@@ -47,7 +48,8 @@ struct CareerSetupView: View {
                     AcademicSetupView(
                         university: $university,
                         enrollmentYear: $enrollmentYear,
-                        degreeType: $degreeType
+                        degreeType: $degreeType,
+                        major: $major
                     )
 
                 case 2:
@@ -205,6 +207,7 @@ struct CareerSetupView: View {
             email: email,
             matricola: matricola,
             university: university,
+            major: major,
             enrollmentYear: enrollmentYear,
             degreeType: degreeType,
             honorValue: honorValue

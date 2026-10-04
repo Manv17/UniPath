@@ -17,7 +17,6 @@ struct StudentIDView: View {
     private var canShowStudentID: Bool {
         !career.fullName.trimmingCharacters(in: .whitespaces).isEmpty &&
         !career.matricola.trimmingCharacters(in: .whitespaces).isEmpty &&
-        !career.email.trimmingCharacters(in: .whitespaces).isEmpty &&
         studentID != nil
     }
     

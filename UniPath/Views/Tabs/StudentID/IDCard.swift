@@ -13,7 +13,7 @@ struct IDCard: View {
     let studentID: StudentID
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 70){
+        VStack(alignment: .leading, spacing: 80){
             VStack(alignment: .leading) {
                 VStack(alignment: .leading, spacing: 4) {
                     
@@ -49,14 +49,14 @@ struct IDCard: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     
-                    Text(career.email)
-//                        .fontWeight(.semibold)
+                    if !career.major.isEmpty {
+                        Text(career.major)
+                    }
                     
                     LabeledContent(
                         "Anno immatricolazione",
                         value: "\(career.enrollmentYear)"
                     )
-//                    .fontWeight(.semibold)
                     .padding(.top, 10)
                 }
             }
@@ -83,7 +83,7 @@ struct IDCard: View {
         .padding(.horizontal, 30)
         .frame(
             maxWidth: .infinity,
-            minHeight: 570,
+            minHeight: 560,
             alignment: .leading
         )
         .foregroundStyle(Color.white)

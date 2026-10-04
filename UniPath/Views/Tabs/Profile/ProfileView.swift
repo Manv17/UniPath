@@ -42,11 +42,21 @@ struct ProfileView: View {
                         }
                         else {
                             Text("Non impostata")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.tertiary)
                         }
                     }
                     
                     LabeledContent("Corso di laurea"){
+                        if !career.major.isEmpty {
+                            Text(career.major)
+                        }
+                        else{
+                            Text("Non impostato")
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    
+                    LabeledContent("Tipologia laurea"){
                         Text(career.degreeType.rawValue)
                     }
                     
