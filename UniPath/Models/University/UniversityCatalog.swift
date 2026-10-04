@@ -79,6 +79,76 @@ struct UniversityCatalog {
             name: "Sapienza Università di Roma",
             shortName: "Sapienza",
             city: "Roma"
+        ),
+        
+        University(
+            id: "unifi",
+            name: "Università degli Studi di Firenze",
+            shortName: "UniFI",
+            city: "Firenze"
+        ),
+
+        University(
+            id: "unina",
+            name: "Università degli Studi di Napoli Federico II",
+            shortName: "UniNA",
+            city: "Napoli"
+        ),
+
+        University(
+            id: "unige",
+            name: "Università degli Studi di Genova",
+            shortName: "UniGE",
+            city: "Genova"
+        ),
+
+        University(
+            id: "unipv",
+            name: "Università degli Studi di Pavia",
+            shortName: "UniPV",
+            city: "Pavia"
+        ),
+
+        University(
+            id: "unipr",
+            name: "Università degli Studi di Parma",
+            shortName: "UniPR",
+            city: "Parma"
+        ),
+
+        University(
+            id: "unife",
+            name: "Università degli Studi di Ferrara",
+            shortName: "UniFE",
+            city: "Ferrara"
+        ),
+
+        University(
+            id: "univr",
+            name: "Università degli Studi di Verona",
+            shortName: "UniVR",
+            city: "Verona"
+        ),
+
+        University(
+            id: "uniba",
+            name: "Università degli Studi di Bari Aldo Moro",
+            shortName: "UniBA",
+            city: "Bari"
+        ),
+
+        University(
+            id: "unive",
+            name: "Università Ca' Foscari Venezia",
+            shortName: "Ca' Foscari",
+            city: "Venezia"
+        ),
+
+        University(
+            id: "uniroma3",
+            name: "Università degli Studi Roma Tre",
+            shortName: "Roma Tre",
+            city: "Roma"
         )
     ]
 }
