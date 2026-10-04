@@ -11,6 +11,7 @@ enum DegreeType: String, CaseIterable, Codable, Identifiable {
     case bachelor = "Triennale"
     case master = "Magistrale"
     case singleCycle = "Ciclo Unico"
+    case singleCycle6 = "Ciclo Unico (6 anni)"
     
     var id: Self { self }
     
@@ -22,6 +23,8 @@ enum DegreeType: String, CaseIterable, Codable, Identifiable {
             return 120
         case .singleCycle:
             return 300
+        case .singleCycle6:
+            return 360
         }
     }
 }

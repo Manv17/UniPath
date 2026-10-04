@@ -45,6 +45,8 @@ struct Career: Codable {
             return 2
         case .singleCycle:
             return 5
+        case .singleCycle6:
+            return 6
         }
     }
     
