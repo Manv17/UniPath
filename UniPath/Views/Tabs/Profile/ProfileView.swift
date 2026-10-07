@@ -10,8 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     
     @Binding var career: Career
-    
-    @State private var showingEditCareerSheet = false
+    let onDeleteCareer: () -> Void
     
     var body: some View {
         NavigationStack{
@@ -65,14 +64,18 @@ struct ProfileView: View {
                         value: "\(career.enrollmentYear)"
                     )
                 }
-                
-                Button("Modifica carriera") {
-                    showingEditCareerSheet = true
-                }
             }
-            
-            .sheet(isPresented: $showingEditCareerSheet) {
-                EditCareerView(career: $career)
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        EditCareerView(
+                            career: $career,
+                            onDeleteCareer: onDeleteCareer
+                        )
+                    } label: {
+                        Image(systemName: "gear")
+                    }
+                }
             }
         }
     }
@@ -87,5 +90,5 @@ struct ProfileView: View {
         degreeType: .bachelor
     )
     
-    ProfileView(career: $career)
+    ProfileView(career: $career, onDeleteCareer: {})
 }

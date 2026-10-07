@@ -11,8 +11,7 @@ struct StudentIDView: View {
     
     @Binding var career: Career
     @State private var studentID: StudentID?
-    
-    @State private var showingEditCareer = false
+    let onDeleteCareer: () -> Void
     
     private var canShowStudentID: Bool {
         !career.fullName.trimmingCharacters(in: .whitespaces).isEmpty &&
@@ -40,8 +39,13 @@ struct StudentIDView: View {
                         .padding(.horizontal, 30)
                         .padding(.bottom, 40)
                     
-                    Button("Vai alle impostazioni carriera") {
-                        showingEditCareer = true
+                    NavigationLink {
+                        EditCareerView(
+                            career: $career,
+                            onDeleteCareer: onDeleteCareer
+                        )
+                    } label: {
+                        Text("Vai alle impostazioni carriera")
                     }
                     .buttonStyle(.glassProminent)
                     .controlSize(.large)
@@ -53,15 +57,6 @@ struct StudentIDView: View {
         
         .onAppear{
             loadStudentID()
-        }
-        
-        .sheet(
-            isPresented: $showingEditCareer,
-            onDismiss: {
-                loadStudentID()
-            }
-        ) {
-            EditCareerView(career: $career)
         }
     }
     

@@ -10,6 +10,7 @@ import SwiftUI
 struct MainTabView: View {
 
     @State var career: Career
+    let onDeleteCareer: () -> Void
 
     var body: some View {
         TabView {
@@ -22,11 +23,11 @@ struct MainTabView: View {
             }
             
             Tab("Profilo", systemImage: "person.crop.circle.fill") {
-                ProfileView(career: $career)
+                ProfileView(career: $career, onDeleteCareer: onDeleteCareer)
             }
             
             Tab("Tessera", systemImage: "person.text.rectangle.fill", role: .search) {
-                StudentIDView(career: $career)
+                StudentIDView(career: $career, onDeleteCareer: onDeleteCareer)
             }
         }
     }
@@ -38,6 +39,7 @@ struct MainTabView: View {
             fullName: "Mario Rossi",
             email: "3408@gmial.com",
             matricola: "1111"
-        )
+        ),
+        onDeleteCareer: {}
     )
 }

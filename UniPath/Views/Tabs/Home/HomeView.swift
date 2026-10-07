@@ -59,9 +59,8 @@ struct HomeView: View {
 }
 
 #Preview {
-    MainTabView(
-        career: Career(
-            fullName: "Mario Rossi"
+    HomeView(career: Career(
+        fullName: "Mario Rossi"
         )
     )
 }
